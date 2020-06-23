@@ -19,6 +19,7 @@ struct pyramid stack[STACK_SIZE];
 struct pyramid get, put;
 unsigned stack_top = 0;
 unsigned answer;
+unsigned max_mask;
 
 void solve(void)
 {
@@ -54,11 +55,12 @@ void solve(void)
             answer = get.h;
         }
         for (unsigned y = 0; y < box_num; y++) {
-            if ((get.bmask & boxes[y].bits) == 0) {
+            if ((get.bmask & boxes[y].bits) == 0 && get.bmask != max_mask) {
                 //c for height
 //                printf("a = %u, b = %u, c = %u\n", boxes[y].a, boxes[y].b, boxes[y].c);
                 if ((get.w > boxes[y].a && get.l > boxes[y].b)
                  || (get.w > boxes[y].b && get.l > boxes[y].a)) {
+//                    printf("a");
 //                    printf("boxes.c = %u, h = %u\n", boxes[y].c, get.h + boxes[y].c);
                     put.w = boxes[y].a;
                     put.l = boxes[y].b;
@@ -71,6 +73,7 @@ void solve(void)
                 //a for height
                 if ((get.w > boxes[y].b && get.l > boxes[y].c)
                  || (get.w > boxes[y].c && get.l > boxes[y].b)) {
+//                    printf("b");
 //                    printf("boxes.a = %u, h = %u\n", boxes[y].a, get.h + boxes[y].a);
                     put.w = boxes[y].b;
                     put.l = boxes[y].c;
@@ -83,6 +86,7 @@ void solve(void)
                 //b for height
                 if ((get.w > boxes[y].a && get.l > boxes[y].c)
                  || (get.w > boxes[y].c && get.l > boxes[y].a)) {
+//                    printf("c");
 //                    printf("boxes.b = %u, h = %u\n", boxes[y].b, get.h + boxes[y].b);
                     put.w = boxes[y].a;
                     put.l = boxes[y].c;
@@ -94,6 +98,7 @@ void solve(void)
                 }
             }
         }
+//        printf("stack_top = %u\n", stack_top);
     }
 }
 
@@ -112,6 +117,8 @@ int main(void)
     cases++;
     for (unsigned c = 1; c < cases; c++) {
         scanf("%u", &box_num);
+        max_mask = ((~boxes[box_num].bits | boxes[box_num].bits) << box_num) >> (sizeof(unsigned) * 8 - box_num);
+        printf("max_mask = %#x\n", max_mask);
         for (unsigned x = 0; x < box_num; x++) {
             scanf("%u %u %u", &boxes[x].a, &boxes[x].b, &boxes[x].c);
         }
