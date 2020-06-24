@@ -1,3 +1,4 @@
+//boxes.
 #include <stdio.h>
 
 #define BOXES 20
@@ -58,8 +59,8 @@ void solve(void)
             if ((get.bmask & boxes[y].bits) == 0 && get.bmask != max_mask) {
                 //c for height
 //                printf("a = %u, b = %u, c = %u\n", boxes[y].a, boxes[y].b, boxes[y].c);
-                if ((get.w > boxes[y].a && get.l > boxes[y].b)
-                 || (get.w > boxes[y].b && get.l > boxes[y].a)) {
+                if ((get.w >= boxes[y].a && get.l >= boxes[y].b)
+                 || (get.w >= boxes[y].b && get.l >= boxes[y].a)) {
 //                    printf("a");
 //                    printf("boxes.c = %u, h = %u\n", boxes[y].c, get.h + boxes[y].c);
                     put.w = boxes[y].a;
@@ -68,11 +69,11 @@ void solve(void)
                     put.bmask = get.bmask | boxes[y].bits;
                     stack[stack_top++] = put;
                 } else {
-//                    printf("fuck c\n");
+//                    printf("fuck a ");
                 }
                 //a for height
-                if ((get.w > boxes[y].b && get.l > boxes[y].c)
-                 || (get.w > boxes[y].c && get.l > boxes[y].b)) {
+                if ((get.w >= boxes[y].b && get.l >= boxes[y].c)
+                 || (get.w >= boxes[y].c && get.l >= boxes[y].b)) {
 //                    printf("b");
 //                    printf("boxes.a = %u, h = %u\n", boxes[y].a, get.h + boxes[y].a);
                     put.w = boxes[y].b;
@@ -81,11 +82,11 @@ void solve(void)
                     put.bmask = get.bmask | boxes[y].bits;
                     stack[stack_top++] = put;
                 } else {
-//                    printf("fuck a\n");
+//                    printf("fuck b ");
                 }
                 //b for height
-                if ((get.w > boxes[y].a && get.l > boxes[y].c)
-                 || (get.w > boxes[y].c && get.l > boxes[y].a)) {
+                if ((get.w >= boxes[y].a && get.l >= boxes[y].c)
+                 || (get.w >= boxes[y].c && get.l >= boxes[y].a)) {
 //                    printf("c");
 //                    printf("boxes.b = %u, h = %u\n", boxes[y].b, get.h + boxes[y].b);
                     put.w = boxes[y].a;
@@ -94,11 +95,16 @@ void solve(void)
                     put.bmask = get.bmask | boxes[y].bits;
                     stack[stack_top++] = put;
                 } else {
-//                    printf("fuck b\n");
+//                    printf("fuck c ");
                 }
             }
+//            printf("\n");
         }
 //        printf("stack_top = %u\n", stack_top);
+/*    for (unsigned c = 0; c < stack_top; c++) {
+        printf("w = %u, l = %u, h = %u, bits = %#x\n", stack[c].w, stack[c].l, stack[c].h, stack[c].bmask);
+    }*/
+
     }
 }
 
